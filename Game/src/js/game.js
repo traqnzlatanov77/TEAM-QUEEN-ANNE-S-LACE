@@ -1,113 +1,86 @@
-
-var questions = [];
-var answers = [];
-var relation = [];
-var tmpData = [];
+ var cards = ['2','3','4','5','6','7','8','9','10','J','D','K','A'];
+ var faces = ['♣','♦','♥','♠'];
+ var hands = {player:[],casino:[]};
 
 /**
- * @description Add new questiuon to database
- * @param {string} q Question
+ * @description Returns card value
+ * @param {string} card
+ * @returns {Number} vard value
  */
-function setQuestion(q) {
-    questions.push(q);
-    return;
-}
-
-/**
- * @description Returns question by index
- * @param {int} i index
- * 
- */
-function getQuestion(i) {
-    return questions[i];
-}
-
-/**
- * @description Load questions from array
- * @param {array} arr questions
- */
-function loadQuestions(arr) {
-    for(var i in arr) {
-        setQuestion(arr[i]);
+function cardValue(card) {
+    var value = 0;
+    switch (card) {
+        case '2':
+            value = 2;
+            break;
+        case '3':
+            value = 3;
+            break;
+        case '4':
+            value = 4;
+            break;
+        case '5':
+            value = 5;
+            break;
+        case '6':
+            value = 6;
+            break;
+        case '7':
+            value = 7;
+            break;
+        case '8':
+            value = 8;
+            break;
+        case '9':
+            value = 9;
+            break;
+        case '10':
+            value = 10;
+            break;
+        case 'J':
+            value = 10;
+            break;
+        case 'D':
+            value = 10;
+            break;
+        case 'K':
+            value = 10;
+            break;
+        case 'A':
+            value = 1;
+            break;
     }
-    return;
+    return value;
 }
 
 /**
- * @description Add new answer to database
- * @param {string} a Answer
+ * @description Choose card from deck
+ * @returns {Array}
  */
-function setAnswer(a){
-    answers.push(a);
-    return;
-}
-
-/**
- * @description Returns answer by index
- * @param {int} i index
- * 
- */
-function getAnswer(i) {
-    return answers[i];
-}
-
-/**
- * @description Load answers from array
- * @param {array} arr answers
- */
-function loadAnswers(arr) {
-    for(var i in arr) {
-        setAnswer(arr[i]);
-    }
-    return;
-}
-
-/**
- * @description Add new relation to database
- * @param {array} arr [question, answer, Y/N]
- */
-function setRelation(arr){
-    answers.push(arr);
-    return;
-}
-
-/**
- * @description Returns answer by index
- * @param {int} i index
- * @return {array} array of [question, answer, Y/N]
- * 
- */
-function getRelation(i) {
-    return relation[i];
-}
-
-/**
- * @description Load relation from array
- * @param {array} arr relation
- */
-function loadRelation(arr) {
-    for(var i in arr) {
-        setRelation(arr[i]);
-    }
-    return;
+function chooseCard() {   
+    //choose card
+    var card = cards[genRandom(13)];
+    //choose face
+    var face = faces[genRandom(13)]
+    
+    var result = [card,face];    
+    return result;
 }
 
 
 /**
- * @description choose best question
- * @returns {array} arr
+ * @description return random number between 0(including) and param(excluding) 
+ * @param {number} max
+ * @returns {Number}
  */
-function chooseBestQuestion () {
-    var maxCount = 0;
-    var bestAnsw = 0;
-    var bestCount = 0;
-    for (var i in tmpData) {
-        //[questionID,[[answerID,Y/N],[answerID,Y/N],[answerID,Y/N]]]
-        var answers= tmpData[i][1];
-        var count = answers.length;
-        if(count>bestCount){
-            //TODO ......
-        }
+function genRandom(max) {
+    return Math.floor(Math.random() * max);
+}
+
+
+function checkScore(p) {
+    var cardHand = hands[p];
+    for(var i in cardHand) {
         
     }
 }
