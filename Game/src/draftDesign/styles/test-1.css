@@ -83,7 +83,10 @@ body {
     input {
         width:10%;
         vertical-align:top;
-        padding-left:10%;
     }
+	
+		input[title=Hit] {
+				margin-left:10%
+			}
 
     
