@@ -1,11 +1,9 @@
  var cards = ['2','3','4','5','6','7','8','9','10','J','D','K','A'];
- var faces = ['♣','♦','♥','♠'];
+ var faces = ['SP','KR','KU','PI'];
  var hands = {player:[],casino:[]};
  var money = 1000;
  var score = {};
- var bet = 0;
- var minBet = 100;
-
+ var bet = 100;
 
 /**
  * @description Choose card from deck and add it to participant hand
@@ -123,7 +121,6 @@ function calcBestResult(player) {
     if(bestResult === 0 && looseResult < Number.MAX_VALUE) {
         bestResult = looseResult;
     }
-
     return bestResult;
 }
 
@@ -134,12 +131,14 @@ function calcBestResult(player) {
 function getWinner() {
     var casinoResult = calcBestResult('casino');
     var playerResult = calcBestResult('player');
-    var result = 'remi';
-    if(result[0]<=21 && result[0]>result[1]) {
-        winner = 'casino';
-    } else if(result[1]<=21 && result[1]>result[0]) {
+    var winner = 'remi';
+    if(playerResult<=21 && playerResult>calcBestResult) {
         winner = 'player';
-    } 
+    } else if(casinoResult<=21 && casinoResult>playerResult) {
+        winner = 'casino';
+    } else if (playerResult>21) {
+        winner = 'casino';
+    }
     return winner;
 }
 
@@ -194,40 +193,128 @@ function cardValue(card) {
     return value;
 }
 
+function cardName(arr) {
+    var card = arr[1]+'-'+arr[0]+'.png';
+    return card;
+}
 
 
-
-
-
-
-
-
-
-function startGame() {
-    //bet validation
-    var betSum = document.getElementById("bet").value;
-    if(betSum%1==NaN || betSum < minBet || betSum > money){
-        alert("You must enter a bet between "+minBet+" and "+money);
-        return; 
-    } else {
-        bet = betSum;
+/**
+ * @description Display dealer's cards on the table
+ * 
+ */
+function displayCasinoCards() {
+    var casinoHands = hands['casino']
+    var html = '<img src="../images/'+cardName(casinoHands[0])+'" >';
+    for (var i=1;  i<casinoHands.length; i++) {
+        html += '<img src="../images/back.png" >';
     }
-    
-    //gives two initial cards of each of the players
-    for (var i = 0; i<2; i++) {
-        chooseCard('player');
-        chooseCard('casino');
+    document.getElementById('dealer-card').innerHTML = html;   
+}
+
+
+/**
+ * @description Display pleyer's cards on the table
+ */
+function displayPlayerCards() {
+    var playerHands = hands['player']
+    var html = '<div class="cards"><img src="../images/'+cardName(playerHands[0])+'" ></div>';
+    for (var i=1;  i<playerHands.length; i++) {
+        html += '<div class="cards"><img src="../images/'+cardName(playerHands[i])+'" ></div>';
     }
-    
-    
+    document.getElementById('player').innerHTML = html;
+}
+        
+
+
+/**
+ * @description Check if player has enough money;
+ * @returns {Boolean}
+ */
+function checkMoney() {
+    var hasMoney = true;
+    if(money-bet<0) {
+        hasMoney =  false;
+    }
+    return hasMoney;
 }
 
 
 
-function finishGame() {
+/**
+ * @description Start game
+ */
+function startGame() {
+    clearHands();
+    if(checkMoney()) {
+        //gives two initial cards of each of the players
+        for (var i = 0; i<2; i++) {
+            chooseCard('player');
+        }
+        if(calcBestResult('player')===21) {
+            alert('BLACK JACK');
+            money += bet*1.5;
+            startGame()
+        } else {
+            chooseCard('casino');
+            displayCasinoCards();
+            displayPlayerCards();
+            document.getElementById('player-score').innerHTML = "<span>"+calcBestResult('player')+"</span>";
+            document.getElementById('money').innerHTML = "<span>$ "+money-bet+"</span>";
+            document.getElementById('bet').innerHTML = "<span>$ "+bet+"</span>";
+        }       
+    } else {
+        alert("No enough money");
+        //Da mahnem butonite stand i hit
+    }   
+}
+
+/**
+ * @description clear temp data for the new game
+ */
+function clearHands() {
+    hands = {player:[],casino:[]};
+    document.getElementById('player-score').innerHTML = "<span>"+0+"</span>";
+}
+
+/**
+ * @description Calculate game result
+ */
+function stand () {
+    while(calcBestResult('casino')<17) {
+        chooseCard('casino');
+    }    
     var winner = getWinner();
-    
-    
-    
-    
+    if(winner === 'casino'){
+        alert ('Lose: Casino: '+calcBestResult('casino')+' You: '+calcBestResult('player'));
+        money -= bet;
+    } else if (winner === 'player') {
+        alert ('You WIN: Casino: '+calcBestResult('casino')+' You: '+calcBestResult('player'));
+        money += bet;
+    } else if (winner === 'remi') {
+        alert ('No WINNER: Casino: '+calcBestResult('casino')+' You: '+calcBestResult('player'));
+    }
+    startGame();
+}
+
+/**
+ * @description Get new card by the player
+ */
+function hit() {
+    chooseCard('player');
+    var playerBestResult = calcBestResult('player');
+    if(playerBestResult>21){
+        alert('You score ismore than 21');
+        money -= bet;
+        startGame();
+    } 
+}
+
+/**
+ * @description restart game
+ * @returns {undefined}
+ */
+function deal() {
+    money = 1000;
+    startGame();
 }
