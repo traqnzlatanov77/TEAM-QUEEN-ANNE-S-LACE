@@ -29,16 +29,16 @@ body {
             div.cards {
                 width: 7.5%;
                 height: 80%;
-                background: url('../images/spades.png') no-repeat 0 0;
-                background-size:1099%;
+                background:url('../images/KR-2.png') no-repeat center;
+                background-size:100%;
                 display:inline-block;
             }
 
             #back {
-                width: 8%;
+                width: 7.5%;
                 height: 80%;
-                background: url(../images/card-backs.png) no-repeat 100% 0;
-                background-size:200%;
+                background: url('../images/BACK.png') no-repeat center;
+                background-size:100%;
                 display:inline-block;
             }
 
