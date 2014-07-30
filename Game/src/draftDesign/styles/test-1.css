@@ -41,6 +41,10 @@ body {
                 background-size:100%;
                 display:inline-block;
             }
+			
+			#dealer-card {
+                margin-left:3.5%;
+            }
 
             #player {
                 text-align:center;
