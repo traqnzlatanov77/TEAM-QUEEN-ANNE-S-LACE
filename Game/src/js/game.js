@@ -6,7 +6,7 @@
 /**
  * @description Returns card value
  * @param {string} card
- * @returns {Number} vard value
+ * @returns {Number} card value
  */
 function cardValue(card) {
     var value = 0;
@@ -83,7 +83,7 @@ function genRandom(max) {
 }
 
 /**
- * @description Check if the selected card is in hand of any parcicipant.
+ * @description Check if the selected card is in hand of any participant.
  * @param {array} card
  * @returns {bool}
  */
