@@ -1,17 +1,43 @@
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>Game - TEAM-QUEEN-ANNE-S-LACE</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="js/game.js" ></script>
-        <script type="text/javascript" src="js/game_old.js" ></script>
-    </head>
-    <body>
-        <div id="console">
-            <div id="score"><!--User score result--></div>  
-            
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="styles/test-1.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="top">
+        <p class="name">Money</p>
+        <p class="score" id="money-score">21</p>
+        <p class="name">Player</p>
+        <p class="score" id="player-score">21</p>
+		<p class="name">Bet</p>
+        <p class="score" id="bet-score">21</p>
+    </div>
+    <div id="image">
+        <div class="table" id="dealer">
+            <div class="cards" id="back"></div>
+            <div class="cards" id="dealer-card"></div>
+            <div class="cards" id="dealer-card2"></div>
+            <div class="cards" id="dealer-card3"></div>
+            <div class="cards" id="dealer-card4"></div>
+            <div class="cards" id="dealer-card5"></div>
+            <div class="cards" id="dealer-card6"></div>
         </div>
-    </body>
+        <div class="table" id="player">
+            <div class="cards"></div>
+            <div class="cards"></div>
+            <div class="cards"></div>
+            <div class="cards"></div>
+            <div class="cards"></div>
+            <div class="cards"></div>
+            <!--<button type="submit" id="image-button">Hit</button>-->
+            <input type="image" src="images/dice-chip-red-hit.png" title="Hit" />
+			<input type="image" src="images/dice-chip-green-stand.png" title="Stand" />
+        </div>
+    </div>
+    <div id="bottom">
+        <!--<button type="submit" id="Button1">Deal</button>-->
+        <input type="image" src="images/dice-chip-blue-deal.png" title="Deal"/>
+    </div>
+</body>
 </html>
