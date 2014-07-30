@@ -1,10 +1,9 @@
- var cards = ['2','3','4','5','6','7','8','9','10','J','D','K','A'];
+ var cards = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
  var faces = ['SP','KR','KU','PI'];
  var hands = {player:[],casino:[]};
  var money = 1000;
  var score = {};
  var bet = 100;
-
 /**
  * @description Choose card from deck and add it to participant hand
  * @param {string} player Player name
@@ -17,9 +16,10 @@ function chooseCard(player) {
     
     var card = [num,face];   
     if(checkCard(card)) {
-        hand[player].push(card);
+        hands[player].push(card);
         return;
     } else {
+        money = 1000;
         chooseCard(player);
     }  
 }
@@ -103,6 +103,7 @@ function displayScore() {
  * @returns {Number}
  */
 function calcBestResult(player) {
+ //   return 21;
     var result = calcPlayerScore(player);
     var bestResult = 0;
     var looseResult = Number.MAX_VALUE;
@@ -132,7 +133,7 @@ function getWinner() {
     var casinoResult = calcBestResult('casino');
     var playerResult = calcBestResult('player');
     var winner = 'remi';
-    if(playerResult<=21 && playerResult>calcBestResult) {
+    if((playerResult<=21 && playerResult>casinoResult) || casinoResult>21) {
         winner = 'player';
     } else if(casinoResult<=21 && casinoResult>playerResult) {
         winner = 'casino';
@@ -180,7 +181,7 @@ function cardValue(card) {
         case 'J':
             value = 10;
             break;
-        case 'D':
+        case 'Q':
             value = 10;
             break;
         case 'K':
@@ -204,12 +205,13 @@ function cardName(arr) {
  * 
  */
 function displayCasinoCards() {
-    var casinoHands = hands['casino']
-    var html = '<img src="../images/'+cardName(casinoHands[0])+'" >';
+    var casinoHands = hands['casino'];
+    var html = '<div class="cards"><img src="images/'+cardName(casinoHands[0])+'" ></div>';
     for (var i=1;  i<casinoHands.length; i++) {
-        html += '<img src="../images/back.png" >';
+        html += '<div class="cards"><img src="images/BACK.png" ></div>';
     }
-    document.getElementById('dealer-card').innerHTML = html;   
+    
+    document.getElementById('dealer').innerHTML = html;   
 }
 
 
@@ -218,14 +220,12 @@ function displayCasinoCards() {
  */
 function displayPlayerCards() {
     var playerHands = hands['player']
-    var html = '<div class="cards"><img src="../images/'+cardName(playerHands[0])+'" ></div>';
+    var html = '<div class="cards"><img src="images/'+cardName(playerHands[0])+'" ></div>';
     for (var i=1;  i<playerHands.length; i++) {
-        html += '<div class="cards"><img src="../images/'+cardName(playerHands[i])+'" ></div>';
+        html += '<div class="cards"><img src="images/'+cardName(playerHands[i])+'" ></div>';
     }
     document.getElementById('player').innerHTML = html;
 }
-        
-
 
 /**
  * @description Check if player has enough money;
@@ -240,32 +240,38 @@ function checkMoney() {
 }
 
 
-
 /**
  * @description Start game
  */
 function startGame() {
     clearHands();
     if(checkMoney()) {
-        //gives two initial cards of each of the players
+        //gives two initial cards of each of the players      
         for (var i = 0; i<2; i++) {
             chooseCard('player');
         }
-        if(calcBestResult('player')===21) {
+        if(calcBestResult('player')==21) {
+            chooseCard('casino');
+            displayPlayerCards(); 
+            displayCasinoCards();
+            money += (bet*1.5);
+            document.getElementById('player-score').innerHTML = "<span>"+calcBestResult('player')+"</span>";
+            document.getElementById('money-score').innerHTML = "<span>$ "+(money-bet)+"</span>";
+            document.getElementById('bet-score').innerHTML = "<span>$ "+bet+"</span>";
             alert('BLACK JACK');
-            money += bet*1.5;
-            startGame()
+            startGame();        
         } else {
+            var av = money-bet;
             chooseCard('casino');
             displayCasinoCards();
             displayPlayerCards();
             document.getElementById('player-score').innerHTML = "<span>"+calcBestResult('player')+"</span>";
-            document.getElementById('money').innerHTML = "<span>$ "+money-bet+"</span>";
-            document.getElementById('bet').innerHTML = "<span>$ "+bet+"</span>";
+            document.getElementById('money-score').innerHTML = "<span>$ "+av+"</span>";
+            document.getElementById('bet-score').innerHTML = "<span>$ "+bet+"</span>";
         }       
     } else {
         alert("No enough money");
-        //Da mahnem butonite stand i hit
+        document.getElementById('buttons').innerHTML = "";
     }   
 }
 
@@ -283,6 +289,7 @@ function clearHands() {
 function stand () {
     while(calcBestResult('casino')<17) {
         chooseCard('casino');
+        displayCasinoCards();
     }    
     var winner = getWinner();
     if(winner === 'casino'){
@@ -302,9 +309,11 @@ function stand () {
  */
 function hit() {
     chooseCard('player');
+    displayPlayerCards();
+    document.getElementById('player-score').innerHTML = "<span>"+calcBestResult('player')+"</span>";
     var playerBestResult = calcBestResult('player');
     if(playerBestResult>21){
-        alert('You score ismore than 21');
+        alert('You score is more than 21');
         money -= bet;
         startGame();
     } 
@@ -315,6 +324,7 @@ function hit() {
  * @returns {undefined}
  */
 function deal() {
-    money = 1000;
-    startGame();
+    location.reload();
 }
+
+startGame();
