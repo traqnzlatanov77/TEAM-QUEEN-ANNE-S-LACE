@@ -14,7 +14,7 @@
         <p class="score" id="bet-score">0</p>
     </div>
     <div id="image">
-        <div class="table" id="deck" style="margin-right: 100px;"><img src="images/BACK.png" ></div>
+        <div class="table" id="deck"><img src="images/BACK.png" ></div>
         <div class="table" id="dealer">
 
         </div>
@@ -22,14 +22,12 @@
 
         </div>
         <div id="buttons">
-            <!--<button type="submit" id="image-button">Hit</button>-->
             <input type="image" src="images/dice-chip-red-hit.png" title="Hit" onclick="hit();"/>
             <input type="image" src="images/dice-chip-green-stand.png" title="Stand" onclick="stand();"/>
         </div>
-    </div>
-    <div id="bottom">
-        <!--<button type="submit" id="Button1">Deal</button>-->
-        <input type="image" src="images/dice-chip-blue-deal.png" title="Deal" onclick="deal();"/>
+		<div id="bottom">
+			<input type="image" src="images/dice-chip-blue-deal.png" title="Deal" onclick="deal();"/>
+		</div>
     </div>
     <script type="text/javascript" src="js/game.js"></script>
 </body>
